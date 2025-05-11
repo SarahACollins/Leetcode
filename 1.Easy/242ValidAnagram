@@ -1,0 +1,40 @@
+/*
+* Sarah Collins 5/10/2025
+* 
+* Written in: C#
+*
+* 242. Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+*/
+
+public class Solution {
+    public bool IsAnagram(string s, string t) {
+        if (s.Length != t.Length) {
+            return false;
+        }
+
+        Dictionary<char, int> sDict = new Dictionary<char, int>();
+        Dictionary<char, int> tDict = new Dictionary<char, int>();
+
+        for (int i = 0; i < s.Length; i++) {
+            if (sDict.ContainsKey(s[i])) {
+                sDict[s[i]]++;
+            } else {
+                sDict.Add(s[i],1);
+            }
+
+            if (tDict.ContainsKey(t[i])) {
+                tDict[t[i]]++;
+            } else {
+                tDict.Add(t[i],1);
+            }
+        }
+
+        foreach (var pair in sDict) {
+            if ((!tDict.ContainsKey(pair.Key)) || (tDict[pair.Key] != pair.Value)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}

@@ -1,0 +1,69 @@
+/*
+* Sarah Collins 5/10/2025
+* 
+* Written in: C#
+*
+* 49. Given an array of strings strs, group the anagrams together. You can return the answer 
+* in any order.
+*/
+
+public class Solution {
+    public IList<IList<string>> GroupAnagrams(string[] strs) {
+        List<IList<string>> anagramList = new List<IList<string>>();
+        bool[] used = new bool[strs.Length];
+
+        for (int i = 0; i < strs.Length; i++) {
+            if (used[i]) continue;
+
+            List<string> anagramPairings = new List<string>();
+
+            anagramPairings.Add(strs[i]);
+            used[i] = true;
+
+            for (int j = i + 1; j < strs.Length; j++) {
+                if (used[j]) continue;
+
+                if (IsAnagram(strs[i], strs[j])) {
+                    anagramPairings.Add(strs[j]);
+                    used[j] = true;
+                }
+            }
+
+            anagramList.Add(anagramPairings);
+        }
+
+        return anagramList;
+    }
+
+    // From Leetcode 242: Valid Anagram
+    bool IsAnagram(string s, string t) {
+        if (s.Length != t.Length) {
+            return false;
+        }
+
+        Dictionary<char, int> sDict = new Dictionary<char, int>();
+        Dictionary<char, int> tDict = new Dictionary<char, int>();
+
+        for (int i = 0; i < s.Length; i++) {
+            if (sDict.ContainsKey(s[i])) {
+                sDict[s[i]]++;
+            } else {
+                sDict.Add(s[i],1);
+            }
+
+            if (tDict.ContainsKey(t[i])) {
+                tDict[t[i]]++;
+            } else {
+                tDict.Add(t[i],1);
+            }
+        }
+
+        foreach (var pair in sDict) {
+            if ((!tDict.ContainsKey(pair.Key)) || (tDict[pair.Key] != pair.Value)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
